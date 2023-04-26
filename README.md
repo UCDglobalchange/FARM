@@ -272,32 +272,33 @@ More information at [http://www.schedmd.com/slurmdocs/job_array.html](http://www
 
 *prefixed with #SBATCH*
 
-| Rank | THING-TO-RANK |
+| : | THING-TO-RANK |
 |-----:|---------------|
 |     1|               |
 |     2|               |
 |     3|               |
 
-|:|A comment|
-|–job-name=myjob|Job Name|
-|–output=myjob.out	|Output sent to this file|
-|–output=myjob.%j.%N.out	|Output file named with job number and the node the job landed on|
-|–error=myjob.err	|Errors written to this file|
-|–partition=med	|Run is the med partition (known as a queue in SGE)|
-|–nodes=4	|Request four nodes|
-|–ntasks-per-node=8	|Request eight tasks per node. The number of tasks may not exceed the number of processor cores on the node|
-|–ntasks=10	|Request 10 tasks for your job|
-|–time=2-12:00:00	|The maximum amount of time SLURM will allow your job to run before it is killed. (2 days and 12 hours in the example)|
-|–mail-type=type	|Set type to: BEGIN to notify you when your job starts, END for when it ends, FAIL for if it fails, or ALL for all of the above|
-|–mail-user=email@ucdavis.edu|	|
-|–mem-per-cpu=MB	|Specify a memory limit for each process of your job|
-|–mem=MB |Specify a memory limit for each node of your job|
-|–exclusive	|Specify that you need exclusive access to nodes for your job|
-|–share	|Specify that your job may share nodes with other jobs|
-|–begin=2013-09-21T01:30:00	|Start the job after this time|
-|–begin=now+1hour	|Use a relative time to start the job|
-|–dependency=afterany:100:101	|Wait for jobs 100 and 101 to complete before starting|
-|–dependency=afterok:100:101	|Wait for jobs 100 and 101 to finish without error|
+| `:` | A comment |
+|-----|-----------|
+| `–job-name=myjob` |Job Name |
+| `–output=myjob.out` | Output sent to this file |
+| `–output=myjob.%j.%N.out` | Output file named with job number and the node the job landed on |
+| `–error=myjob.err` | Errors written to this file |
+| `–partition=med` | Run is the med partition (known as a queue in SGE) |
+| `–nodes=4` | Request four nodes |
+| `–ntasks-per-node=8` | Request eight tasks per node. The number of tasks may not exceed the number of processor cores on the node |
+| `–ntasks=10` | Request 10 tasks for your job |
+| `–time=2-12:00:00` | The maximum amount of time SLURM will allow your job to run before it is killed. (2 days and 12 hours in the example) |
+| `–mail-type=type` | Set type to: BEGIN to notify you when your job starts, END for when it ends, FAIL for if it fails, or ALL for all of the above |
+| `–mail-user=email@ucdavis.edu` |	  |
+| `–mem-per-cpu=MB` | Specify a memory limit for each process of your job |
+| `–mem=MB` | Specify a memory limit for each node of your job |
+| `–exclusive` | Specify that you need exclusive access to nodes for your job |
+| `–share` | Specify that your job may share nodes with other jobs |
+| `–begin=2013-09-21T01:30:00` | Start the job after this time |
+| `–begin=now+1hour` | Use a relative time to start the job |
+| `–dependency=afterany:100:101` | Wait for jobs 100 and 101 to complete before starting |
+| `–dependency=afterok:100:101` | Wait for jobs 100 and 101 to finish without error |
 
 Show all available options
 ```
