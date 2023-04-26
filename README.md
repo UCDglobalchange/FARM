@@ -327,8 +327,6 @@ Note that `/scratch/` is a shared space between everyone who runs jobs on a node
 
 The `/scratch/` directory is subject to frequent purges, so do not attempt to store anything there longer than it takes your job to run.
 
-If you would like to purchase additional scratch space for yourself or your lab group, contact the helpdesk for more information.
-
 ## Jupyter Lab
 
 The instruction on setting up and running Jupyer Lab is courtesy of Lucas Sterzinger with minor modifications from Erwan Monier. You can run Jupyter Lab on a computer node in FARM, but it’s a bit involved because the compute nodes are not directly accessible from the internet/your machine. Instead, you have to tunnel your connection through the login node (farm.cse.ucdavis.edu). Here’s how to setup Jupyter Lab and tunnel your connection properly:
