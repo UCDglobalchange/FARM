@@ -54,9 +54,9 @@ rsync has the advantage that if the connection is interrupted for any reason you
 See man scp and man rsync for more information.
 
 ### Where to store large datasets
-If you need to download large datasets that other group members might use in the future, you should download them and store them in our group folder located at
-`/group/moniergr/`
-It would be good to let everyone know as well what the dataset is, so please include a short description of the data in the README file in the group folder, including the version of the data, a link to the repository/website, the temporal and spatial resolution, spatial extent and variables.
+If you need to download large datasets that other group members might use in the future, you should download them and store them in our group folder located at `/group/moniergr/`.
+
+It would be good to let everyone know as well what the dataset is, so please include a short description of the data in the `README` file in the group folder, including the version of the data, a link to the repository/website, the temporal and spatial resolution, spatial extent and variables.
 
 ## Using Software and Modules
 
