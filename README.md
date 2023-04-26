@@ -68,13 +68,13 @@ When a user requests that a piece of software be made available to all users on 
 
 Typical module commands:
 
-`module show` - shows what modules you currently have loaded
-`module avail` - a list of ALL available modules
-`module load <modulename>` - load a module
-`module unload <modulename>` - unload a module
-`module purge` - unload ALL modules
-`module whatis <modulename>` - show a short description of the module, if available
-`module help <modulename>` - show more detailed information about a module, if available
+- `module show` - shows what modules you currently have loaded
+- `module avail` - a list of ALL available modules
+- `module load <modulename>` - load a module
+- `module unload <modulename>` - unload a module
+- `module purge` - unload ALL modules
+- `module whatis <modulename>` - show a short description of the module, if available
+- `module help <modulename>` - show more detailed information about a module, if available
 Full help for the `module` command is available on the cluster by running `man module`, or on the web at the [modules package website](https://modules.readthedocs.io/en/stable/module.html).
 
 Multiple versions of a the same software package may be available. By default, `module load <modulename>` will usually load the latest version. If you want to use the non-default version of a module, specify the version with a `/` after the module name. For example, to load a specific version of Hmmer: `module load hmmer/2.3.2`
