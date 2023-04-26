@@ -93,4 +93,56 @@ Visit the Environments page for much more information on getting started with so
 
 If you can't find a piece of software on the cluster, you can request an installation for cluster-wide use. Contact the [helpdesk](farm-hpc@ucdavis.edu) with the name of the cluster, your username, the name of the software, and a link to the software's website, documentation, or installation directions, if applicable.
 
+## The /scratch/ Directory and Disk I/O
 
+Disk I/O (input/output) happens when reading to or from a file on the hard drive. Please avoid heavy I/O in your home directory, as this degrades file server performance for everyone. If you know that your software is I/O intensive, such as software that rapidly reads/writes to many files, performs many small reads/writes, and so on, you may want to copy your data out of your home directory and onto the compute node as a part of your batch job, or the network file system (NFS) can bottleneck, slowing down both your job and others, as well.
+
+To prevent NFS bottlenecking, Farm supports the use of the `/scratch/` directory on the compute nodes when you have I/O-intensive code that needs temporary file space. Each compute node has its own independent scratch directory of about 1TB.
+
+Please create a unique directory for each job when you use scratch space, such as `/scratch/your-username/job-id/`, to avoid collisions with other users or yourself. For example, in your sbatch script, you can use `/scratch/$USER/$SLURM_JOBID` or `/scratch/$USER/$SLURM_JOBID/$SLURM_ARRAY_TASK_ID` (for array jobs).
+
+When your job is finished, copy any results/output that you wrote to your `/scratch` subdirectory (if any) and remove ALL of your files from your `/scratch` location.
+
+Note that `/scratch/` is a shared space between everyone who runs jobs on a node, and is a limited resource. It is your responsibility to clean up your scratch space when your job is done or the space will fill up and be unusable by anyone.
+
+`/scratch/` is local to each node, and is not shared between nodes and the login node so you will need to perform setup and cleanup tasks at the start and end of every job run. If you do not cleanup at the end of every run you will leave remnants behind that will eventually fill the shared space.
+
+The `/scratch/` directory is subject to frequent purges, so do not attempt to store anything there longer than it takes your job to run.
+
+If you would like to purchase additional scratch space for yourself or your lab group, contact the helpdesk for more information.
+
+## Using the Batch Queue
+
+Job scheduling with [SLURM](https://wiki.cse.ucdavis.edu/support/hpc/software/slurm) is a key feature of computing on the cluster.
+
+A * *job* * in the context of the cluster is a running piece of software performing some kind of function, such as computation, analysis, simulation, analysis, modeling, comparing, sorting, and other research-related tasks.
+
+The * *job scheduler* * or * *batch queue* * system allows for the fair provisioning of limited resources (nodes, CPUS, memory, and time) on a shared system.
+
+Farm uses the SLURM job scheduler to manage user jobs, passing the work to the compute nodes for execution, primarily through the use of `sbatch` and `srun` commands. Jobs are placed in a queue and executed according to a priority system.
+
+**Do not skip the batch queue by running your compute tasks directly on the head/login node.**
+
+Running jobs on the login node degrades performance for all users and can damage the cluster. Jobs found running outside of the job queue will be terminated and your account may be temporarily suspended until you contact the [helpdesk](farm-hpc@ucdavis.edu), so that the admins can work with you to help you run your job most effectively without damaging the cluster.
+
+### Batch Partitions
+
+The batch queue is divided into job priority queues called partitions. Access to a particular partition is determined by your college, department, lab, or sponsor's contribution to the cluster by buying nodes. You will be informed what partitions you have access to when you receive your account creation email.
+
+Farm's primary partitions include:
+
+- low, med, high - Farm II CPU compute nodes
+- low2, med2, high2 - Farm III CPU compute nodes
+- bigmeml, bigmemm, bigmemh - Farm II high-memory compute nodes
+- bml, bmm, bmh - Farm III high-memory compute nodes
+When purchasing a node, it will typically be added to the pool of nodes in the latest generation of Farm (Farm III, as of 2019) unless special arrangements are made.
+
+**Choosing a Partition:**
+
+**Low** priority - jobs in this queue may killed at any time when superceded by jobs in the medium or high partitions, with the possibility of being restarted at a later time when there are resources available again. The low queue is useful for soaking up unused cycles with short jobs, and is a particularly good fit for large array jobs with short run times. Low priority jobs can use more resources than your group paid for, if there are no other higher-priority jobs.
+
+**Medium** priority - jobs in this queue may be temporarily suspended when superceded by jobs in the high partition, but will resume when higher priority job finishes. Medium jobs can also use more resources than your group paid for, if there are no higher-priority jobs. It is NOT recommended to run MPI jobs in medium.
+
+**High** priority - jobs in this queue will kill/suspend lower priority jobs. Jobs in high will keep the allocated hardware until it's done (or there's a system or power failure.) Jobs in the high partition are limited to using the number of CPUs that your group contributed to the cluster. This partition is recommended for MPI jobs.
+
+For more information about submitting your job to the batch queue with the sbatch and srun commands, visit our SLURM page.
