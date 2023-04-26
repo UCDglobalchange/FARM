@@ -155,10 +155,9 @@ For more information about submitting your job to the batch queue with the sbatc
 - `sbatch` is used to submit a job script for later execution. The script will typically contain one or more srun commands to launch parallel tasks.
 squeue reports the state of jobs or job steps. It has a wide variety of filtering, sorting, and formatting options. By default, it reports the running jobs in priority order and then the pending jobs in priority order.
 - `srun` is used to submit a job for execution or initiate job steps in real time. srun has a wide variety of options to specify resource requirements, including: minimum and maximum node count, processor count, specific nodes to use or not use, and specific node characteristics (so much memory, disk space, certain required features, etc.). A job can contain multiple job steps executing sequentially or in parallel on independent or shared nodes within the job's node allocation.smap reports state information for jobs, partitions, and nodes managed by SLURM, but graphically displays the information to reflect network topology.
-- `scancel` is used to stop a job early. Example, when you queue the wrong script or you know it's going to fail because you forgot something. See more in 
+- `scancel` is used to stop a job early. Example, when you queue the wrong script or you know it's going to fail because you forgot something.
 
-Monitoring Jobs:
-More in depth information at http://slurm.schedmd.com/documentation.html
+More in depth information on SLURM can be found at [http://slurm.schedmd.com/documentation.html](http://slurm.schedmd.com/documentation.html)
 
 **Example Script:**
 ```
@@ -268,6 +267,40 @@ $ sbatch --array=0-10000 --partition=low test-array.sh
 On the Farm cluster the maximum array size is 10001.
 
 More information at [http://www.schedmd.com/slurmdocs/job_array.html](http://www.schedmd.com/slurmdocs/job_array.html)
+
+**SLURM Script Quick Reference**
+
+*prefixed with #SBATCH*
+
+|:|A comment|
+|–job-name=myjob|Job Name|
+|–output=myjob.out	|Output sent to this file|
+|–output=myjob.%j.%N.out	|Output file named with job number and the node the job landed on|
+|–error=myjob.err	|Errors written to this file|
+|–partition=med	|Run is the med partition (known as a queue in SGE)|
+|–nodes=4	|Request four nodes|
+|–ntasks-per-node=8	|Request eight tasks per node. The number of tasks may not exceed the number of processor cores on the node|
+|–ntasks=10	|Request 10 tasks for your job|
+|–time=2-12:00:00	|The maximum amount of time SLURM will allow your job to run before it is killed. (2 days and 12 hours in the example)|
+|–mail-type=type	|Set type to: BEGIN to notify you when your job starts, END for when it ends, FAIL for if it fails, or ALL for all of the above|
+|–mail-user=email@ucdavis.edu|	|
+|–mem-per-cpu=MB	|Specify a memory limit for each process of your job|
+|–mem=MB |Specify a memory limit for each node of your job|
+|–exclusive	|Specify that you need exclusive access to nodes for your job|
+|–share	|Specify that your job may share nodes with other jobs|
+|–begin=2013-09-21T01:30:00	|Start the job after this time|
+|–begin=now+1hour	|Use a relative time to start the job|
+|–dependency=afterany:100:101	|Wait for jobs 100 and 101 to complete before starting|
+|–dependency=afterok:100:101	|Wait for jobs 100 and 101 to finish without error|
+
+Show all available options
+```
+$ sbatch --help
+```
+Another useful command
+```
+ $ sbatch --usage
+```
 
 ## The /scratch/ Directory and Disk I/O
 
