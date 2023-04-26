@@ -272,12 +272,6 @@ More information at [http://www.schedmd.com/slurmdocs/job_array.html](http://www
 
 *prefixed with #SBATCH*
 
-| : | THING-TO-RANK |
-|-----:|---------------|
-|     1|               |
-|     2|               |
-|     3|               |
-
 | `:` | A comment |
 |-----|-----------|
 | `–job-name=myjob` |Job Name |
@@ -307,6 +301,14 @@ $ sbatch --help
 Another useful command
 ```
  $ sbatch --usage
+```
+
+**Useful .bashrc or .bash_profile aliases for the cluster**
+```
+alias sq="squeue -u $(whoami)"     ##to check on your own running jobs
+alias sqb="squeue | grep bigmem"   ##to check on the jobs on bigmem partition
+alias sqs="squeue | grep serial"   ##to check on the jobs on serial partition
+alias sjob="scontrol show -d job"  ##to check detailed information about a running job. USAGE: sjob 134158
 ```
 
 ## The /scratch/ Directory and Disk I/O
