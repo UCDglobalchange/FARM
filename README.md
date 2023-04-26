@@ -18,11 +18,6 @@ If `(base)` doesn’t appear at the beginning of your prompt and `which python` 
 3.	Once the job is submitted, a log file called `jupyter-notebook.log` should be created in the same directory. Near the top of the log file should be instructions for tunneling into the compute node that the JupyterLab was launched on. For me, that looks something like: `ssh -N -L 8888:c8-62.farm.cse.ucdavis.edu:9632 -i ./.ssh/id_rsa emonier@farm.cse.ucdavis.edu`
 4.	Copy and paste that line into a new terminal window (a local one, on your machine). Then, in your web browser, go to [https://localhost:8888](https://localhost:8888)
 
-## Where to store large datasets
-If you need to download large datasets that other group members might use in the future, you should download them and store them in our group folder located at
-`/group/moniergr/`
-It would be good to let everyone know as well what the dataset is, so please include a short description of the data in the README file in the group folder, including the version of the data, a link to the repository/website, the temporal and spatial resolution, spatial extent and variables.
-
 ## Transferring Your Data
 Farm uses SSH key-pairs ONLY so you need to point any local scp/sftp clients at that the same private part that you use to SSH to Farm.
 
@@ -57,6 +52,11 @@ To use rsync to transfer a file or directory from Farm to your local computer:
 rsync has the advantage that if the connection is interrupted for any reason you can just up-arrow and run the exact same command again and it will resume where it stopped.
 
 See man scp and man rsync for more information.
+
+### Where to store large datasets
+If you need to download large datasets that other group members might use in the future, you should download them and store them in our group folder located at
+`/group/moniergr/`
+It would be good to let everyone know as well what the dataset is, so please include a short description of the data in the README file in the group folder, including the version of the data, a link to the repository/website, the temporal and spatial resolution, spatial extent and variables.
 
 ## Using Software and Modules
 
@@ -115,9 +115,9 @@ If you would like to purchase additional scratch space for yourself or your lab 
 
 Job scheduling with [SLURM](https://wiki.cse.ucdavis.edu/support/hpc/software/slurm) is a key feature of computing on the cluster.
 
-A * *job* * in the context of the cluster is a running piece of software performing some kind of function, such as computation, analysis, simulation, analysis, modeling, comparing, sorting, and other research-related tasks.
+A *job* in the context of the cluster is a running piece of software performing some kind of function, such as computation, analysis, simulation, analysis, modeling, comparing, sorting, and other research-related tasks.
 
-The * *job scheduler* * or * *batch queue* * system allows for the fair provisioning of limited resources (nodes, CPUS, memory, and time) on a shared system.
+The *job scheduler* or *batch queue* system allows for the fair provisioning of limited resources (nodes, CPUS, memory, and time) on a shared system.
 
 Farm uses the SLURM job scheduler to manage user jobs, passing the work to the compute nodes for execution, primarily through the use of `sbatch` and `srun` commands. Jobs are placed in a queue and executed according to a priority system.
 
