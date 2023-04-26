@@ -272,6 +272,12 @@ More information at [http://www.schedmd.com/slurmdocs/job_array.html](http://www
 
 *prefixed with #SBATCH*
 
+| Rank | THING-TO-RANK |
+|-----:|---------------|
+|     1|               |
+|     2|               |
+|     3|               |
+
 |:|A comment|
 |–job-name=myjob|Job Name|
 |–output=myjob.out	|Output sent to this file|
