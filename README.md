@@ -2,6 +2,10 @@
 Information and code relating to using the FARM Linux-based supercomputing cluster for the College of Agricultural and Environmental Sciences at UC Davis.
 - [Logging in](#logging-in)
 - [Transferring Your Data](#transferring-your-data)
+- [Using Software and Modules](#using-software-and-modules)
+- [Using the Batch Queue SLURM](#using-the-batch-queue-slurm)
+- [The /scratch/ Directory and Disk I/O](#the-scratch-directory-and-disk-io)
+- [Jupyter Lab](#jupyter-lab)
 
 ## Logging In
 
@@ -107,24 +111,6 @@ Many additional Python 2 packages may be found under the `bio` module. Note that
 Visit the Environments page for much more information on getting started with software and the modules command on the cluster.
 
 If you can't find a piece of software on the cluster, you can request an installation for cluster-wide use. Contact the [helpdesk](farm-hpc@ucdavis.edu) with the name of the cluster, your username, the name of the software, and a link to the software's website, documentation, or installation directions, if applicable.
-
-## The /scratch/ Directory and Disk I/O
-
-Disk I/O (input/output) happens when reading to or from a file on the hard drive. Please avoid heavy I/O in your home directory, as this degrades file server performance for everyone. If you know that your software is I/O intensive, such as software that rapidly reads/writes to many files, performs many small reads/writes, and so on, you may want to copy your data out of your home directory and onto the compute node as a part of your batch job, or the network file system (NFS) can bottleneck, slowing down both your job and others, as well.
-
-To prevent NFS bottlenecking, Farm supports the use of the `/scratch/` directory on the compute nodes when you have I/O-intensive code that needs temporary file space. Each compute node has its own independent scratch directory of about 1TB.
-
-Please create a unique directory for each job when you use scratch space, such as `/scratch/your-username/job-id/`, to avoid collisions with other users or yourself. For example, in your sbatch script, you can use `/scratch/$USER/$SLURM_JOBID` or `/scratch/$USER/$SLURM_JOBID/$SLURM_ARRAY_TASK_ID` (for array jobs).
-
-When your job is finished, copy any results/output that you wrote to your `/scratch` subdirectory (if any) and remove ALL of your files from your `/scratch` location.
-
-Note that `/scratch/` is a shared space between everyone who runs jobs on a node, and is a limited resource. It is your responsibility to clean up your scratch space when your job is done or the space will fill up and be unusable by anyone.
-
-`/scratch/` is local to each node, and is not shared between nodes and the login node so you will need to perform setup and cleanup tasks at the start and end of every job run. If you do not cleanup at the end of every run you will leave remnants behind that will eventually fill the shared space.
-
-The `/scratch/` directory is subject to frequent purges, so do not attempt to store anything there longer than it takes your job to run.
-
-If you would like to purchase additional scratch space for yourself or your lab group, contact the helpdesk for more information.
 
 ## Using the Batch Queue SLURM
 
@@ -283,10 +269,27 @@ On the Farm cluster the maximum array size is 10001.
 
 More information at [http://www.schedmd.com/slurmdocs/job_array.html](http://www.schedmd.com/slurmdocs/job_array.html)
 
+## The /scratch/ Directory and Disk I/O
 
-## Instructions on setting up Jupyter Lab on FARM (Courtesy of Lucas Sterzinger with modifications from Erwan Monier)
+Disk I/O (input/output) happens when reading to or from a file on the hard drive. Please avoid heavy I/O in your home directory, as this degrades file server performance for everyone. If you know that your software is I/O intensive, such as software that rapidly reads/writes to many files, performs many small reads/writes, and so on, you may want to copy your data out of your home directory and onto the compute node as a part of your batch job, or the network file system (NFS) can bottleneck, slowing down both your job and others, as well.
 
-You can run Jupyter Lab on a computer node in FARM, but it’s a bit involved because the compute nodes are not directly accessible from the internet/your machine. Instead, you have to tunnel your connection through the login node (farm.cse.ucdavis.edu). Here’s how to setup Jupyter Lab and tunnel your connection properly:
+To prevent NFS bottlenecking, Farm supports the use of the `/scratch/` directory on the compute nodes when you have I/O-intensive code that needs temporary file space. Each compute node has its own independent scratch directory of about 1TB.
+
+Please create a unique directory for each job when you use scratch space, such as `/scratch/your-username/job-id/`, to avoid collisions with other users or yourself. For example, in your sbatch script, you can use `/scratch/$USER/$SLURM_JOBID` or `/scratch/$USER/$SLURM_JOBID/$SLURM_ARRAY_TASK_ID` (for array jobs).
+
+When your job is finished, copy any results/output that you wrote to your `/scratch` subdirectory (if any) and remove ALL of your files from your `/scratch` location.
+
+Note that `/scratch/` is a shared space between everyone who runs jobs on a node, and is a limited resource. It is your responsibility to clean up your scratch space when your job is done or the space will fill up and be unusable by anyone.
+
+`/scratch/` is local to each node, and is not shared between nodes and the login node so you will need to perform setup and cleanup tasks at the start and end of every job run. If you do not cleanup at the end of every run you will leave remnants behind that will eventually fill the shared space.
+
+The `/scratch/` directory is subject to frequent purges, so do not attempt to store anything there longer than it takes your job to run.
+
+If you would like to purchase additional scratch space for yourself or your lab group, contact the helpdesk for more information.
+
+## Jupyter Lab
+
+The instruction on setting up and running Jupyer Lab is courtesy of Lucas Sterzinger with minor modifications from Erwan Monier. You can run Jupyter Lab on a computer node in FARM, but it’s a bit involved because the compute nodes are not directly accessible from the internet/your machine. Instead, you have to tunnel your connection through the login node (farm.cse.ucdavis.edu). Here’s how to setup Jupyter Lab and tunnel your connection properly:
 
 1.	Download and install a python3 distribution, if you don’t have one already. I prefer [miniforge](https://github.com/conda-forge/miniforge) - it uses the conda-forge channel by default so that you get the most up-to-date versions of packages (the rest of this guide assumes you’re using miniforge instead of something like Anaconda). The python installed by default in FARM is difficult to work with and this will make your life much easier in the future.
   - Best way to do this is to wget/curl the Linux (x86) installer [https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh)
