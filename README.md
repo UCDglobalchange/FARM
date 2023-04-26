@@ -1,22 +1,35 @@
 # FARM instructions
 Information and code relating to using the FARM Linux-based supercomputing cluster for the College of Agricultural and Environmental Sciences at UC Davis
 
-## Instructions on setting up Jupyter Lab on FARM (Courtesy of Lucas Sterzinger with modifications from Erwan Monier)
-You can run Jupyter Lab on a computer node in FARM, but it’s a bit involved because the compute nodes are not directly accessible from the internet/your machine. Instead, you have to tunnel your connection through the login node (farm.cse.ucdavis.edu). Here’s how to setup Jupyter Lab and tunnel your connection properly:
-1.	Download and install a python3 distribution, if you don’t have one already. I prefer [miniforge](https://github.com/conda-forge/miniforge) - it uses the conda-forge channel by default so that you get the most up-to-date versions of packages (the rest of this guide assumes you’re using miniforge instead of something like Anaconda). The python installed by default in FARM is difficult to work with and this will make your life much easier in the future.
-  - Best way to do this is to wget/curl the Linux (x86) installer [https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh)
-  - Run the installer with `bash ./Miniforge3-Linux-x86_64.sh`
-  - This should create the folder "~/miniforge3" with lots of files inside of it.
-  - Run `~/miniforge3/bin/conda init bash` - this will set up your .bashrc (or equivalent) with the correct paths. Change "bash" to your actual shell if it's different (I use zsh).
-  - Log out and back into FARM. A `(base)` should appear at the beginning of your prompt and `which python` should return `/home/<username>/miniforge3/bin/python`
-If `(base)` doesn’t appear at the beginning of your prompt and `which python` doesn’t return the right python path, you may need to copy the text relating to `# >>> conda initialize >>>` from your .bashrc to your .bash_profile.
-  - Packages can now be installed with `conda install <package>`
-  - Install Jupyter Lab with `conda install jupyterlab`
-  - Set a password to access your jupyter lab with `jupyter lab password`
-2.	[Here is a bash script](https://github.com/UCDglobalchange/FARM/blob/main/start_notebook.sh) that can be submitted to SLURM with `sbatch start_notebook.sh` to start Jupyter Lab on a compute node and print the necessary tunneling information.
-  NOTE: Change the partition, cpus-per-task, and memory allocations as desired. **ntasks-per-node should always equal 1**.
-3.	Once the job is submitted, a log file called `jupyter-notebook.log` should be created in the same directory. Near the top of the log file should be instructions for tunneling into the compute node that the JupyterLab was launched on. For me, that looks something like: `ssh -N -L 8888:c8-62.farm.cse.ucdavis.edu:9632 -i ./.ssh/id_rsa emonier@farm.cse.ucdavis.edu`
-4.	Copy and paste that line into a new terminal window (a local one, on your machine). Then, in your web browser, go to [https://localhost:8888](https://localhost:8888)
+## Logging In
+
+Farm is accessible using [SSH](https://www.openssh.com/) in a terminal emulator.
+
+### SSH Keys
+
+An SSH key is required to log in. SSH keys are generated as a matched pair of a private key and a public key. Keep your private key safe and use a strong, memorable passphrase.
+
+We support one key per user. If you need to access the cluster from multiple computers, such as a desktop and a laptop, copy your private key. Directions are on the [ssh key webpage](https://wiki.cse.ucdavis.edu/support/general/security/ssh).
+
+Note that if you forget your passphrase or lose your private key, we cannot reset it. You'll need to generate a new key pair, following the same directions as when you first created it.
+
+Visit the [ssh key webpage](https://wiki.cse.ucdavis.edu/support/general/security/ssh) for much more information on generating and using an ssh key on a PC, Mac, or Linux computer.
+
+### Terminal Emulator Software
+
+You will need terminal emulator software to log into Farm and run jobs. The software you choose must be able to use ssh keys to connect. This information is typically available in the documentation for the software. Common software choices include:
+
+- [terminal.app](https://support.apple.com/guide/terminal/welcome/mac) or [iTerm 2](https://www.iterm2.com/iTerm2) are common MacOS terminal emulator options.
+- [Mobaxterm](https://mobaxterm.mobatek.net/) is an all-in-one terminal emulator for Windows that gives a very Linux-like terminal environment along with the ability to edit files in a local editor and have changes automatically uploaded back to Farm.
+- [PuTTY](https://www.chiark.greenend.org.uk/~sgtatham/putty/) is the most common free and open-source terminal emulator for Windows. ([How to configure PuTTY](https://wiki.cse.ucdavis.edu/support/general/security/putty) for your SSH keys to connect to a cluster.)
+- [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) can provide a Linux terminal within Windows 10. Once you have it installed, you can follow the Linux-based directions to generate a key pair and use ssh at the command-line to connect.
+- [Windows Terminal](https://devblogs.microsoft.com/commandline/introducing-windows-terminal/) for Windows 10 can provide a terminal experience much like Linux or MacOS. Preview code may be available on [Microsoft's Github](https://github.com/Microsoft/Terminal).
+
+### Connecting
+
+Once you have an SSH key and your account has been created, you can connect to Farm. In most text-based terminal emulators (Linux and MacOS), this is how you will connect:
+
+`ssh yourusername@farm.cse.ucdavis.edu`
 
 ## Transferring Your Data
 Farm uses SSH key-pairs ONLY so you need to point any local scp/sftp clients at that the same private part that you use to SSH to Farm.
@@ -146,3 +159,21 @@ When purchasing a node, it will typically be added to the pool of nodes in the l
 **High** priority - jobs in this queue will kill/suspend lower priority jobs. Jobs in high will keep the allocated hardware until it's done (or there's a system or power failure.) Jobs in the high partition are limited to using the number of CPUs that your group contributed to the cluster. This partition is recommended for MPI jobs.
 
 For more information about submitting your job to the batch queue with the sbatch and srun commands, visit our SLURM page.
+
+## Instructions on setting up Jupyter Lab on FARM (Courtesy of Lucas Sterzinger with modifications from Erwan Monier)
+You can run Jupyter Lab on a computer node in FARM, but it’s a bit involved because the compute nodes are not directly accessible from the internet/your machine. Instead, you have to tunnel your connection through the login node (farm.cse.ucdavis.edu). Here’s how to setup Jupyter Lab and tunnel your connection properly:
+
+1.	Download and install a python3 distribution, if you don’t have one already. I prefer [miniforge](https://github.com/conda-forge/miniforge) - it uses the conda-forge channel by default so that you get the most up-to-date versions of packages (the rest of this guide assumes you’re using miniforge instead of something like Anaconda). The python installed by default in FARM is difficult to work with and this will make your life much easier in the future.
+  - Best way to do this is to wget/curl the Linux (x86) installer [https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh](https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh)
+  - Run the installer with `bash ./Miniforge3-Linux-x86_64.sh`
+  - This should create the folder "~/miniforge3" with lots of files inside of it.
+  - Run `~/miniforge3/bin/conda init bash` - this will set up your .bashrc (or equivalent) with the correct paths. Change "bash" to your actual shell if it's different (I use zsh).
+  - Log out and back into FARM. A `(base)` should appear at the beginning of your prompt and `which python` should return `/home/<username>/miniforge3/bin/python`
+If `(base)` doesn’t appear at the beginning of your prompt and `which python` doesn’t return the right python path, you may need to copy the text relating to `# >>> conda initialize >>>` from your .bashrc to your .bash_profile.
+  - Packages can now be installed with `conda install <package>`
+  - Install Jupyter Lab with `conda install jupyterlab`
+  - Set a password to access your jupyter lab with `jupyter lab password`
+2.	[Here is a bash script](https://github.com/UCDglobalchange/FARM/blob/main/start_notebook.sh) that can be submitted to SLURM with `sbatch start_notebook.sh` to start Jupyter Lab on a compute node and print the necessary tunneling information.
+  NOTE: Change the partition, cpus-per-task, and memory allocations as desired. **ntasks-per-node should always equal 1**.
+3.	Once the job is submitted, a log file called `jupyter-notebook.log` should be created in the same directory. Near the top of the log file should be instructions for tunneling into the compute node that the JupyterLab was launched on. For me, that looks something like: `ssh -N -L 8888:c8-62.farm.cse.ucdavis.edu:9632 -i ./.ssh/id_rsa emonier@farm.cse.ucdavis.edu`
+4.	Copy and paste that line into a new terminal window (a local one, on your machine). Then, in your web browser, go to [https://localhost:8888](https://localhost:8888)
