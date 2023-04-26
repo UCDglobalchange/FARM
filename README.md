@@ -13,7 +13,7 @@ If `(base)` doesn’t appear at the beginning of your prompt and `which python` 
   - Packages can now be installed with `conda install <package>`
   - Install Jupyter Lab with `conda install jupyterlab`
   - Set a password to access your jupyter lab with `jupyter lab password`
-2.	Here is a bash script that can be submitted to SLURM with `sbatch start_notebook.sh` to start Jupyter Lab on a compute node and print the necessary tunneling information.
+2.	[Here is a bash script](https://github.com/UCDglobalchange/FARM/blob/main/start_notebook.sh) that can be submitted to SLURM with `sbatch start_notebook.sh` to start Jupyter Lab on a compute node and print the necessary tunneling information.
   NOTE: Change the partition, cpus-per-task, and memory allocations as desired. ntasks-per-node should always equal 1
 3.	Once the job is submitted, a log file called `jupyter-notebook.log` should be created in the same directory. Near the top of the log file should be instructions for tunneling into the compute node that the JupyterLab was launched on. For me, that looks something like: `ssh -N -L 8888:c8-62.farm.cse.ucdavis.edu:9632 -i ./.ssh/id_rsa emonier@farm.cse.ucdavis.edu`
 4.	Copy and paste that line into a new terminal window (a local one, on your machine). Then, in your web browser, go to [https://localhost:8888](https://localhost:8888)
