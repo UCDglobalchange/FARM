@@ -124,7 +124,7 @@ The `/scratch/` directory is subject to frequent purges, so do not attempt to st
 
 If you would like to purchase additional scratch space for yourself or your lab group, contact the helpdesk for more information.
 
-## Using the Batch Queue
+## Using the Batch Queue SLURM
 
 Job scheduling with [SLURM](https://wiki.cse.ucdavis.edu/support/hpc/software/slurm) is a key feature of computing on the cluster.
 
@@ -160,7 +160,130 @@ When purchasing a node, it will typically be added to the pool of nodes in the l
 
 For more information about submitting your job to the batch queue with the sbatch and srun commands, visit our SLURM page.
 
+### SLURM Quick Introduction
+
+- `sinfo` reports the state of partitions and nodes managed by SLURM. It has a wide variety of filtering, sorting, and formatting options.
+- `smap` reports state information for jobs, partitions, and nodes managed by SLURM, but graphically displays the information to reflect network topology.
+- `sbatch` is used to submit a job script for later execution. The script will typically contain one or more srun commands to launch parallel tasks.
+squeue reports the state of jobs or job steps. It has a wide variety of filtering, sorting, and formatting options. By default, it reports the running jobs in priority order and then the pending jobs in priority order.
+- `srun` is used to submit a job for execution or initiate job steps in real time. srun has a wide variety of options to specify resource requirements, including: minimum and maximum node count, processor count, specific nodes to use or not use, and specific node characteristics (so much memory, disk space, certain required features, etc.). A job can contain multiple job steps executing sequentially or in parallel on independent or shared nodes within the job's node allocation.smap reports state information for jobs, partitions, and nodes managed by SLURM, but graphically displays the information to reflect network topology.
+- `scancel` is used to stop a job early. Example, when you queue the wrong script or you know it's going to fail because you forgot something. See more in 
+
+Monitoring Jobs:
+More in depth information at http://slurm.schedmd.com/documentation.html
+
+**Example Script:**
+```
+#!/bin/bash -l
+# NOTE the -l flag!
+
+# If you need any help, please email farm-hpc@ucdavis.edu
+
+# Name of the job - You'll probably want to customize this.
+#SBATCH --job-name=benchmark-test
+
+# Use the med2 partition (or which ever you have access to)
+# Run this to see what partitions you have access to:
+# sacctmgr -s list user $USER format=partition
+#SBATCH --partition=med2
+
+# Standard out and Standard Error output files with the job number in the name.
+#SBATCH --output=bench-%j.output
+#SBATCH --error=bench-%j.output
+
+# Request 4 CPUs and 8 GB of RAM from 1 node:
+#SBATCH --nodes=1
+#SBATCH --mem=8G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4 
+
+# The useful part of your job goes below
+
+# run one thread for each one the user asks the queue for
+# hostname is just for debugging
+hostname
+export OMP_NUM_THREADS=$SLURM_NTASKS
+module load benchmarks
+
+# The main job executable to run: note the use of srun before it
+srun stream
+```
+
+**Example Run:**
+
+We will ask the batch queue for 1 node and 2, 4, 8, 16, and 32 CPUs to see how well this OpenMP code scales.
+```
+bill@gauss:~$ sbatch -N 1 -n 2 -t 5 test.sh 
+Submitted batch job 12
+bill@gauss:~$ sbatch -N 1 -n 4 -t 5 test.sh 
+Submitted batch job 13
+bill@gauss:~$ sbatch -N 1 -n 8 -t 5 test.sh 
+Submitted batch job 14
+bill@gauss:~$ sbatch -N 1 -n 16 -t 5 test.sh 
+Submitted batch job 15
+bill@gauss:~$ sbatch -N 1 -n 32 -t 5 test.sh 
+Submitted batch job 16
+```
+
+**Example Output:**
+
+This benchmark uses OpenMP to benchmark memory bandwidth with a 915MB array. This show increasing memory bandwidth as you use more CPUs up to a maximum of 60GB/sec using an entire node. If you are curious about the benchmark, additional information is available at [https://www.cs.virginia.edu/stream/](https://www.cs.virginia.edu/stream/).
+
+```
+bill@gauss:~$ ls
+bench-12.output  bench-14.output  bench-16.output
+bench-13.output  bench-15.output  test.sh
+bill@gauss:~$ cat *.output | grep ":"
+STREAM version $Revision: 5.9 $
+Copy:       12517.8583       0.0513       0.0511       0.0516
+Scale:      12340.2147       0.0521       0.0519       0.0524
+Add:        12495.4439       0.0770       0.0768       0.0772
+Triad:      12490.9087       0.0782       0.0769       0.0796
+STREAM version $Revision: 5.9 $
+Copy:       16879.8667       0.0381       0.0379       0.0384
+Scale:      16807.9956       0.0384       0.0381       0.0388
+Add:        16733.7084       0.0578       0.0574       0.0583
+Triad:      16482.7247       0.0585       0.0582       0.0589
+STREAM version $Revision: 5.9 $
+Copy:       16098.1749       0.0399       0.0398       0.0400
+Scale:      16018.8248       0.0402       0.0400       0.0405
+Add:        15887.7032       0.0606       0.0604       0.0610
+Triad:      15839.4543       0.0608       0.0606       0.0611
+STREAM version $Revision: 5.9 $
+Copy:       31428.3070       0.0205       0.0204       0.0206
+Scale:      31221.0489       0.0206       0.0205       0.0207
+Add:        31324.3960       0.0308       0.0306       0.0311
+Triad:      31151.6049       0.0310       0.0308       0.0313
+STREAM version $Revision: 5.9 $
+Copy:       61085.8038       0.0106       0.0105       0.0108
+Scale:      60474.7806       0.0108       0.0106       0.0110
+Add:        61318.3663       0.0159       0.0157       0.0162
+Triad:      61049.6830       0.0159       0.0157       0.0160
+bill@gauss:~$ 
+```
+
+**Array Jobs:**
+
+The newest version of slurm supports array jobs. For example:
+```
+$ cat test-array.sh
+#!/bin/bash
+hostname
+echo $SLURM_ARRAY_TASK_ID
+```
+
+```
+# Submit a job array with index values between 0 and 10,000 on all free CPUs:
+$ sbatch --array=0-10000 --partition=low test-array.sh
+```
+
+On the Farm cluster the maximum array size is 10001.
+
+More information at [http://www.schedmd.com/slurmdocs/job_array.html](http://www.schedmd.com/slurmdocs/job_array.html)
+
+
 ## Instructions on setting up Jupyter Lab on FARM (Courtesy of Lucas Sterzinger with modifications from Erwan Monier)
+
 You can run Jupyter Lab on a computer node in FARM, but it’s a bit involved because the compute nodes are not directly accessible from the internet/your machine. Instead, you have to tunnel your connection through the login node (farm.cse.ucdavis.edu). Here’s how to setup Jupyter Lab and tunnel your connection properly:
 
 1.	Download and install a python3 distribution, if you don’t have one already. I prefer [miniforge](https://github.com/conda-forge/miniforge) - it uses the conda-forge channel by default so that you get the most up-to-date versions of packages (the rest of this guide assumes you’re using miniforge instead of something like Anaconda). The python installed by default in FARM is difficult to work with and this will make your life much easier in the future.
