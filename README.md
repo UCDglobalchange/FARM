@@ -17,3 +17,8 @@ If `(base)` doesn’t appear at the beginning of your prompt and `which python` 
   NOTE: Change the partition, cpus-per-task, and memory allocations as desired. **ntasks-per-node should always equal 1**.
 3.	Once the job is submitted, a log file called `jupyter-notebook.log` should be created in the same directory. Near the top of the log file should be instructions for tunneling into the compute node that the JupyterLab was launched on. For me, that looks something like: `ssh -N -L 8888:c8-62.farm.cse.ucdavis.edu:9632 -i ./.ssh/id_rsa emonier@farm.cse.ucdavis.edu`
 4.	Copy and paste that line into a new terminal window (a local one, on your machine). Then, in your web browser, go to [https://localhost:8888](https://localhost:8888)
+
+## Where to store large datasets
+If you need to download large datasets that other group members might use in the future, you should download them and store them in our group folder located at
+`/group/moniergr/`
+It would be good to let everyone know as well what the dataset is, so please include a short description of the data in the README file in the group folder, including the version of the data, a link to the repository/website, the temporal and spatial resolution, spatial extent and variables.
