@@ -58,4 +58,39 @@ rsync has the advantage that if the connection is interrupted for any reason you
 
 See man scp and man rsync for more information.
 
+## Using Software and Modules
+
+Farm has many software packages available for a wide range of needs. Most packages that are installed are available as environment modules using the `module avail` command. Use `module load <module/version>` to load a module, and `module unload <module/version>` when done.
+
+To help minimize software environment conflicts, our clusters use the module command to alter the user's shell environment. This allows for reproducible environment changes that are easily loaded or unloaded at will.
+
+When a user requests that a piece of software be made available to all users on the cluster, the sysadmins will often write an environment module to make it easily accessible for everyone with the module load command.
+
+Typical module commands:
+
+`module show` - shows what modules you currently have loaded
+`module avail` - a list of ALL available modules
+`module load <modulename>` - load a module
+`module unload <modulename>` - unload a module
+`module purge` - unload ALL modules
+`module whatis <modulename>` - show a short description of the module, if available
+`module help <modulename>` - show more detailed information about a module, if available
+Full help for the `module` command is available on the cluster by running `man module`, or on the web at the [modules package website](https://modules.readthedocs.io/en/stable/module.html).
+
+Multiple versions of a the same software package may be available. By default, `module load <modulename>` will usually load the latest version. If you want to use the non-default version of a module, specify the version with a `/` after the module name. For example, to load a specific version of Hmmer: `module load hmmer/2.3.2`
+
+The environment variables that get set by a module depend on the requirements of the software. At a minimum, most modules will add the software's executable location to the user's `$PATH`, but it may also load other modules as dependencies, ensure that specific conflicting modules are not loaded, or take other actions to ensure that the software will run correctly.
+
+If you find an error in a module on one of our clusters, please contact the helpdesk and cut/paste the entire command line prompt, including your username, clustername, directory, the command you attempted to run and error output you received so that we can start the troubleshooting process to fix the module.
+
+Generally, use as few modules as possible at a time–once you're done using a particular piece of software, unload the module before you load another one, to avoid incompatibilities.
+
+Many of the most up-to-date Python-based software packages may be found under the `bio3` module. Load the module with `module load bio3` and run `conda list` to see a complete and up-to-date list.
+
+Many additional Python 2 packages may be found under the `bio` module. Note that the `bio` and `bio3` modules are mutually incompatible with one another, so do not load both at the same time.
+
+Visit the Environments page for much more information on getting started with software and the modules command on the cluster.
+
+If you can't find a piece of software on the cluster, you can request an installation for cluster-wide use. Contact the [helpdesk](farm-hpc@ucdavis.edu) with the name of the cluster, your username, the name of the software, and a link to the software's website, documentation, or installation directions, if applicable.
+
 
