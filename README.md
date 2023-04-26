@@ -22,3 +22,40 @@ If `(base)` doesn’t appear at the beginning of your prompt and `which python` 
 If you need to download large datasets that other group members might use in the future, you should download them and store them in our group folder located at
 `/group/moniergr/`
 It would be good to let everyone know as well what the dataset is, so please include a short description of the data in the README file in the group folder, including the version of the data, a link to the repository/website, the temporal and spatial resolution, spatial extent and variables.
+
+## Transferring Your Data
+Farm uses SSH key-pairs ONLY so you need to point any local scp/sftp clients at that the same private part that you use to SSH to Farm.
+
+### File Transfer Software
+
+[Filezilla](https://filezilla-project.org/) is a multi-platform client commonly used to transfer data to and from the cluster.
+
+[Cyberduck](https://cyberduck.io/) is another popular file transfer client for Mac or Windows computers that has the ability to edit files in a local editor and have changes automatically uploaded back to Farm.
+
+[WinSCP](https://winscp.net/eng/index.php) is Windows-only file transfer software.
+
+[Globus](https://wiki.cse.ucdavis.edu/globus?s[]=globus) is another common solution, especially for larger transfers.
+
+rsync and scp are command-line tools to transfer data to and from the cluster.
+
+### Example Transfer Commands
+
+These commands should be run on your computer, not on Farm.
+
+To transfer something to Farm from your local computer:
+
+`scp -r local-directory username@farm.cse.ucdavis.edu:~/destination/`
+
+Note: outbound scp initiated from Farm is disabled. Please initiate an inbound scp using the above method.
+
+To transfer something from Farm to your local computer:
+
+`scp -r username@farm.cse.ucdavis.edu:~/farmdata local-directory`
+To use rsync to transfer a file or directory from Farm to your local computer:
+
+`rsync -aP -e ssh username@farm.cse.ucdavis.edu:~/farmdata .`
+rsync has the advantage that if the connection is interrupted for any reason you can just up-arrow and run the exact same command again and it will resume where it stopped.
+
+See man scp and man rsync for more information.
+
+
