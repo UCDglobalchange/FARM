@@ -4,9 +4,10 @@ Information and code relating to using the FARM Linux-based supercomputing clust
 - [Transferring Your Data](#transferring-your-data)
 - [Using Software and Modules](#using-software-and-modules)
 - [Using the Batch Queue SLURM](#using-the-batch-queue-slurm)
+- [Interactive Shells on a Node](#interactive-shells-on-a-node) 
 - [The /scratch/ Directory and Disk I/O](#the-scratch-directory-and-disk-io)
 - [Jupyter Lab](#jupyter-lab)
-- [Rstudio](#Rstudio)
+- [Rstudio](#rstudio)
 
 ## Logging In
 
@@ -311,6 +312,19 @@ alias sqb="squeue | grep bigmem"   ##to check on the jobs on bigmem partition
 alias sqs="squeue | grep serial"   ##to check on the jobs on serial partition
 alias sjob="scontrol show -d job"  ##to check detailed information about a running job. USAGE: sjob 134158
 ```
+
+## Interactive Shells on a Node
+After the upgrade of the Farm cluster to Ubuntu 22.04, users are no longer permitted to ssh into a node where their job might be running. The [Farm April 2023 - 22.04 Upgrade Notes](https://hpc.ucdavis.edu/2023-apr-farm-upgrade) suggest the following way to get an interactive shell on a node:
+
+1. To get a new job with a shell:
+        ```
+        srun --partition=PartitionName --time=5:00:00 --ntasks=1 --cpus-per-task=4 --mem=1G --pty /bin/bash -l
+        ```
+2. To get a shell within an existing job:
+        ```
+        srun --jobid=your-running-job_ID_here --pty /bin/bash -l
+        ```
+
 
 ## The /scratch/ Directory and Disk I/O
 
