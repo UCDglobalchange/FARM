@@ -345,3 +345,7 @@ If `(base)` doesn’t appear at the beginning of your prompt and `which python` 
   NOTE: Change the partition, cpus-per-task, and memory allocations as desired. **ntasks-per-node should always equal 1**.
 3.	Once the job is submitted, a log file called `jupyter-notebook.log` should be created in the same directory. Near the top of the log file should be instructions for tunneling into the compute node that the JupyterLab was launched on. For me, that looks something like: `ssh -N -L 8888:c8-62.farm.cse.ucdavis.edu:9632 -i ./.ssh/id_rsa emonier@farm.cse.ucdavis.edu`
 4.	Copy and paste that line into a new terminal window (a local one, on your machine). Then, in your web browser, go to [https://localhost:8888](https://localhost:8888)
+
+## Rstudio
+
+Davis R Users Group provides this helpful tutorial to run RStudio Server on FARM https://d-rug.github.io/R-Studio-on-Farm/rstudio-on-farm.html#load-and-run-rstudio-server. 
