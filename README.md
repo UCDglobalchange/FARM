@@ -6,6 +6,7 @@ Information and code relating to using the FARM Linux-based supercomputing clust
 - [Using the Batch Queue SLURM](#using-the-batch-queue-slurm)
 - [The /scratch/ Directory and Disk I/O](#the-scratch-directory-and-disk-io)
 - [Jupyter Lab](#jupyter-lab)
+- [Rstudio](#Rstudio)
 
 ## Logging In
 
