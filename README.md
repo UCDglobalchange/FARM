@@ -1,5 +1,5 @@
 # FARM instructions
-Information and code relating to using the FARM Linux-based supercomputing cluster for the College of Agricultural and Environmental Sciences at UC Davis.
+Information and code relating to using the FARM Linux-based supercomputing cluster managed by the College of Agricultural and Environmental Sciences at UC Davis.
 - [Logging in](#logging-in)
 - [Transferring Your Data](#transferring-your-data)
 - [Using Software and Modules](#using-software-and-modules)
