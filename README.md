@@ -40,7 +40,7 @@ You will need terminal emulator software to log into FARM and run jobs. The soft
 
 Once you have an SSH key and your account has been created, you can connect to FARM. In most text-based terminal emulators (Linux and MacOS), this is how you will connect:
 
-`ssh yourusername@FARM.hpc.ucdavis.edu`
+`ssh yourusername@farm.hpc.ucdavis.edu`
 
 ## Transferring Your Data
 FARM uses SSH key-pairs ONLY so you need to point any local scp/sftp clients at that the same private part that you use to SSH to FARM.
@@ -63,16 +63,16 @@ These commands should be run on your computer, not on FARM.
 
 To transfer something to FARM from your local computer:
 
-`scp -r local-directory username@FARM.hpc.ucdavis.edu:~/destination/`
+`scp -r local-directory username@farm.hpc.ucdavis.edu:~/destination/`
 
 Note: outbound scp initiated from FARM is disabled. Please initiate an inbound scp using the above method.
 
 To transfer something from FARM to your local computer:
 
-`scp -r username@FARM.hpc.ucdavis.edu:~/FARMdata local-directory`
+`scp -r username@farm.hpc.ucdavis.edu:~/farmdata local-directory`
 To use rsync to transfer a file or directory from FARM to your local computer:
 
-`rsync -aP -e ssh username@FARM.hpc.ucdavis.edu:~/FARMdata .`
+`rsync -aP -e ssh username@farm.hpc.ucdavis.edu:~/farmdata .`
 rsync has the advantage that if the connection is interrupted for any reason you can just up-arrow and run the exact same command again and it will resume where it stopped.
 
 See man scp and man rsync for more information.
@@ -115,7 +115,7 @@ Many additional Python 2 packages may be found under the `bio` module. Note that
 
 Visit the Environments page for much more information on getting started with software and the modules command on the cluster.
 
-If you can't find a piece of software on the cluster, you can request an installation for cluster-wide use. Contact the [helpdesk](FARM-hpc@ucdavis.edu) with the name of the cluster, your username, the name of the software, and a link to the software's website, documentation, or installation directions, if applicable.
+If you can't find a piece of software on the cluster, you can request an installation for cluster-wide use. Contact the [helpdesk](farm-hpc@ucdavis.edu) with the name of the cluster, your username, the name of the software, and a link to the software's website, documentation, or installation directions, if applicable.
 
 ## Using the Batch Queue SLURM
 
@@ -129,7 +129,7 @@ FARM uses the SLURM job scheduler to manage user jobs, passing the work to the c
 
 **Do not skip the batch queue by running your compute tasks directly on the head/login node.**
 
-Running jobs on the login node degrades performance for all users and can damage the cluster. Jobs found running outside of the job queue will be terminated and your account may be temporarily suspended until you contact the [helpdesk](FARM-hpc@ucdavis.edu), so that the admins can work with you to help you run your job most effectively without damaging the cluster.
+Running jobs on the login node degrades performance for all users and can damage the cluster. Jobs found running outside of the job queue will be terminated and your account may be temporarily suspended until you contact the [helpdesk](farm-hpc@ucdavis.edu), so that the admins can work with you to help you run your job most effectively without damaging the cluster.
 
 ### Batch Partitions
 
@@ -172,7 +172,7 @@ More in depth information on SLURM can be found at [http://slurm.schedmd.com/doc
 #!/bin/bash -l
 # NOTE the -l flag!
 
-# If you need any help, please email FARM-hpc@ucdavis.edu
+# If you need any help, please email farm-hpc@ucdavis.edu
 
 # Name of the job - You'll probably want to customize this.
 #SBATCH --job-name=benchmark-test
@@ -320,7 +320,7 @@ alias sjob="scontrol show -d job"  ##to check detailed information about a runni
 ```
 
 ## Interactive Shells on a Node
-After the upgrade of the FARM cluster to Ubuntu 22.04, users are no longer permitted to ssh into a node where their job might be running. The [FARM April 2023 - 22.04 Upgrade Notes](https://hpc.ucdavis.edu/2023-apr-FARM-upgrade) suggest the following way to get an interactive shell on a node:
+After the upgrade of the FARM cluster to Ubuntu 22.04, users are no longer permitted to ssh into a node where their job might be running. The [FARM April 2023 - 22.04 Upgrade Notes](https://hpc.ucdavis.edu/2023-apr-farm-upgrade) suggest the following way to get an interactive shell on a node:
 
 1. To get a new job with a shell:
         ```
