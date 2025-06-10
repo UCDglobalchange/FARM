@@ -351,6 +351,8 @@ The `/scratch/` directory is subject to frequent purges, so do not attempt to st
 
 [Open OnDemand (OOD)](https://ondemand.farm.hpc.ucdavis.edu/pun/sys/dashboard) allows access to FARM resources using a web browser. All OOD apps are automatically launched through Slurm jobs, so you have access to your normal cluster resources. Just like sbatch jobs, OOD apps (jobs) run even when your browser is not attached, so you can reattach to a running OOD app just by going back to the OOD website.
 
+<img width="1437" alt="image" src="https://github.com/user-attachments/assets/bc0903fb-28b1-4a5f-9438-7dfb6c4d87db" />
+
 You can find important information about https://docs.hpc.ucdavis.edu/software/ondemand/
 
 OOD allows you to:
@@ -358,4 +360,29 @@ OOD allows you to:
 - run JupyterLab so you can run your Jupyter Notebooks
 - run RStudio Server so you can run your R code
 
-More information to come.
+### Running JupyterLab
+
+FARM has a centralized version of Conda (an open source package management and environment management system for Python) installed. In order to run the JupyterLab in a flexible way, where you can install various Python packages, it is recommended to create your own Conda environment and then to install your own Python kernel.
+
+Step 1: log onto FARM using your terminal as described in section [Logging in](#logging-in).
+Step 2: load the conda module.
+```
+module load conda
+```
+Step 3: create your environment, which we will call myenvironment (for performance reasons, it is recommend to use mamba instead of conda for environment creation or manipulation; mamba can do everything conda can do, and is generally faster).
+```
+mamba create -n myenvironment -y python=3.10
+```
+Step 4: activate the environment.
+```
+mamba activate myenvironment
+```
+Step 5: install the ipykernel that can be used in the Open OnDemand JupyterLab.
+```
+mamba install ipykernel
+```
+Step 6: run the ipykernel to establish this conda environment.
+```
+python3 -m ipykernel install --user --name myenvironment
+```
+Now, Python packages you install in that conda environment (via conda, or via pip, or via...) will be available in JupyterLab using that kernel. 
