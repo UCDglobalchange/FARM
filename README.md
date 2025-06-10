@@ -6,7 +6,7 @@ Information and code relating to using the FARM Linux-based supercomputing clust
 - [Using the Batch Queue SLURM](#using-the-batch-queue-slurm)
 - [Interactive Shells on a Node](#interactive-shells-on-a-node) 
 - [The /scratch/ Directory and Disk I/O](#the-scratch-directory-and-disk-io)
-- [Open OnDemand](#open-ondemand)
+- [Open OnDemand](#open-ondemand) (for running JupyerLab and RStudio via your website)
 
 ## Creating an Account
 
